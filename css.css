@@ -1,0 +1,120 @@
+html, body 
+{
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;                     
+}
+
+#field
+{
+    position: absolute;
+    top: calc(50%-300px);
+    left: calc(50%-300px);
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+    grid-template-rows: repeat(10,1fr);
+    grid-gap: 0px;
+    border:solid 1px black;
+}
+
+
+.node
+{
+    
+    padding: 0;
+    border:solid black 1px;
+    width: 60px;
+    height: 60px;
+    position: relative;
+}
+img
+{
+    width: 60px;
+    height: 60px;
+    z-index: 10;
+}
+
+#end img
+{
+z-index: 901;
+height: 0;
+width: 0;
+}
+
+#end
+{
+    transform-origin: 50% 50%;
+    transform: translate(-50% -50%);
+    scale: 0 0;    
+    z-index: 900;
+}
+
+.bl
+{
+   
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 60px;
+    display: block;
+    z-index: 19;
+}
+
+#re
+{
+    position: absolute;
+    top:calc(55%);
+    left:calc(44%);
+    z-index: 902;
+    width: 0;
+    height: 0;
+}
+
+#re img
+{
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#reWH,#reLH
+{
+    z-index: 904;
+}
+
+#reWF,#reLF
+{
+    z-index: 903;
+}
+
+#reW,#reL
+{
+    z-index: 905;
+}
+
+
+#reW:hover,#reL:hover
+{
+    opacity: 0;
+}
+
+
+@keyframes anime
+{
+    0%{transform: scaleY(1);}
+    100%{transform: scaleY(0);}
+}
+
+
+
+@keyframes end
+{
+    0%{}
+    100%{scale:1 1;}
+}
