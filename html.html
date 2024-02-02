@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="css.css">
 </head>
 <body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+    <img id="bg" src="" alt="">
     <div  id="field">
       
     </div>
-    <div id="end"><img id="win" src="win.png" alt=""><img id="lose" src="lose.png" alt="">       <div onclick="restart()" id="re"><img hover="reWH(this);" id="reW" src="reW.png" alt=""><img id="reWF" src="reWF.png" alt=""><img  id="reWH" src="reWH.png" alt="">    <img id="reL" src="reL.png" alt=""> <img id="reLF" src="reLF.png" alt=""><img id="reLH" src="reLH.png" alt="">  </div></div>
+    <div id="end"><img id="win" src="png/win.png" alt=""><img id="lose" src="png/lose.png" alt="">       <div onmouseout="document.getElementById('reWH').style.opacity='0';document.getElementById('reLH').style.opacity='0';document.getElementById('reW').style.opacity='1';document.getElementById('reL').style.opacity='1';" onmouseover="document.getElementById('reW').style.opacity='0';document.getElementById('reL').style.opacity='0';document.getElementById('reWH').style.opacity='1';document.getElementById('reLH').style.opacity='1';" onclick="restart()" id="re"><img id="reW" src="png/reW.png" alt=""><img  id="reWH" src="png/reWH.png" alt="">    <img id="reL" src="png/reL.png" alt=""> <img id="reLH" src="png/reLH.png" alt="">  </div></div>
     <script src="js.js"></script>
 </body>
 </html>

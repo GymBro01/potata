@@ -1,5 +1,13 @@
+
+
 function WIN()
 {
+    document.getElementById("re").style.width="120px";
+    document.getElementById("re").style.height="120px";
+    document.getElementById("reW").style.width="100%";
+    document.getElementById("reW").style.height="100%";
+    document.getElementById("reWH").style.width="100%";
+    document.getElementById("reWH").style.height="100%";
     for(i of field.bags)
     {
         i.open();
@@ -9,11 +17,17 @@ function WIN()
     document.getElementById("win").style.width="100%";
     field.play=false;
     document.getElementById("end").style.animation="end 1s cubic-bezier(0.7, 0, 0.84, 0)";
-    setTimeout('document.getElementById("end").style.scale="1 1"; document.getElementById("re").style.width="120px";document.getElementById("re").style.height="120px";document.getElementById("reW").style.width="100%";document.getElementById("reWH").style.width="100%";document.getElementById("reWF").style.width="100%";',1000)`,1000);
+    setTimeout('document.getElementById("end").style.scale="1 1"; document.getElementById("re").style.opacity="1";document.getElementById("reW").style.opacity="1";',1000)`,1000);
 }
 
 function LOSE()
 {
+    document.getElementById("re").style.width="120px";
+    document.getElementById("re").style.height="120px";
+    document.getElementById("reL").style.width="100%";
+    document.getElementById("reL").style.height="100%";
+    document.getElementById("reLH").style.width="100%";
+    document.getElementById("reLH").style.height="100%";
     for(i of field.bags)
     {
         i.open();
@@ -23,7 +37,7 @@ function LOSE()
     document.getElementById("lose").style.width="100%";
     field.play=false;
     document.getElementById("end").style.animation="end 1s cubic-bezier(0.7, 0, 0.84, 0)";
-    setTimeout('document.getElementById("end").style.scale="1 1"; document.getElementById("re").style.width="120px";document.getElementById("re").style.height="120px";document.getElementById("reL").style.width="100%";document.getElementById("reLH").style.width="100%"; document.getElementById("reLF").style.width="100%";',1000)`,1000);
+    setTimeout('document.getElementById("end").style.scale="1 1"; document.getElementById("re").style.opacity="1";document.getElementById("reL").style.opacity="1";',1000)`,1000);
 }
 
 function rand(max) {
@@ -68,7 +82,7 @@ function rand(max) {
              if(n>0)
             {
                 field.near++;
-                document.querySelector(`[y="${i}"][x="${r}"]`).innerHTML=document.querySelector(`[y="${i}"][x="${r}"]`).innerHTML.replace(`<img src="po.png" alt="">`,`<img src="${n}.png" alt="">`);
+                document.querySelector(`[y="${i}"][x="${r}"]`).innerHTML=document.querySelector(`[y="${i}"][x="${r}"]`).innerHTML.replace(`<img src="png/po.png" alt="">`,`<img src="png/${n}.png" alt="">`);
 
             }
         }
@@ -100,7 +114,7 @@ function rand(max) {
         this.isEmpty=true;
         this.isFilled=false;
         this.isNear=false;
-        field.html.innerHTML+=`<div onclick="tap(this)" class="node" y="${y}" x="${x}"><div oncontextmenu="flag(this)" class="bl"><img class="im" src="fl.png" alt=""></div><img src="po.png" alt=""></div>`;
+        field.html.innerHTML+=`<div onclick="tap(this)" class="node" y="${y}" x="${x}"><div oncontextmenu="flag(this)" class="bl"><img class="im" src="png/fl.png" alt=""></div><img src="png/po.png" alt=""></div>`;
         this.html=document.querySelector(`[y="${y}"][x="${x}"]`);
     }
 
@@ -108,7 +122,7 @@ function rand(max) {
     {
         this.isEmpty=false;
         this.isFilled=true;
-        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML=document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML.replace(`<img src="po.png" alt="">`,`<img src="bag.png" alt="">`);
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML=document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML.replace(`<img src="png/po.png" alt="">`,`<img src="png/bag.png" alt="">`);
     }
 
     checkB()
@@ -262,13 +276,15 @@ function rand(max) {
  }
 function restart()
 {
+    
     document.getElementById("field").innerHTML="";
-    document.getElementById("end").innerHTML='<img id="win" src="win.png" alt=""><img id="lose" src="lose.png" alt="">       <div onclick="restart()" id="re"><img hover="reWH(this);" id="reW" src="reW.png" alt=""><img id="reWF" src="reWF.png" alt=""><img  id="reWH" src="reWH.png" alt="">    <img id="reL" src="reL.png" alt=""> <img id="reLF" src="reLF.png" alt=""><img id="reLH" src="reLH.png" alt="">  </div>'
+    document.getElementById("end").innerHTML=`<img id="win" src="png/win.png" alt=""><img id="lose" src="png/lose.png" alt="">       <div onmouseover="document.getElementById('reW').style.opacity='0';document.getElementById('reL').style.opacity='0';document.getElementById('reWH').style.opacity='1';document.getElementById('reLH').style.opacity='1';" onclick="restart()" id="re"><img id="reW" src="png/reW.png" alt=""><img  id="reWH" src="png/reWH.png" alt="">    <img id="reL" src="png/reL.png" alt=""> <img id="reLH" src="png/reLH.png" alt="">  </div>`;
     start();
 }
 
 function start()
 {
+    localStorage.setItem("auf",15);
     field.bags=[];
     field.play=true;
     isF=true;
@@ -290,10 +306,9 @@ function start()
 
 function tap(val)
 {
-    field.near=1;
     if(field.play)
     {
-    if(val.querySelector('img[src="mark.png"]')==undefined)
+    if(val.querySelector('img[src="png/mark.png"]')==undefined)
     {
     if(isF)
     {
@@ -337,10 +352,10 @@ start();
 function reWH(x)
 {
     x.style.width="0";
-    document.getElementById("reWH").style.width="100%";
+    document.getElementById("reWH").style.opacity="1";
 }
 function reW(x)
 {
     x.style.width="0";
-    document.getElementById("reW").style.width="100%";
+    document.getElementById("reW").style.opacity="1";
 }
