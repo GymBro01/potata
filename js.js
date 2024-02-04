@@ -1,9 +1,10 @@
-
+nX=20;
+nY=10;
 
 function WIN()
 {
-    document.getElementById("re").style.width="120px";
-    document.getElementById("re").style.height="120px";
+    document.getElementById("re").style.width="11%";
+    document.getElementById("re").style.height="11%";
     document.getElementById("reW").style.width="100%";
     document.getElementById("reW").style.height="100%";
     document.getElementById("reWH").style.width="100%";
@@ -22,8 +23,8 @@ function WIN()
 
 function LOSE()
 {
-    document.getElementById("re").style.width="120px";
-    document.getElementById("re").style.height="120px";
+    document.getElementById("re").style.width="11%";
+    document.getElementById("re").style.height="11%";
     document.getElementById("reL").style.width="100%";
     document.getElementById("reL").style.height="100%";
     document.getElementById("reLH").style.width="100%";
@@ -46,12 +47,12 @@ function rand(max) {
  
   function spawn(r,c)
   {
-    mines=17;
+    mines=(2*nX+2*nY)/1.8;
     while(mines>0)
     {
              fail=false;
-             m=rand(10);
-             n=rand(10);       
+             m=rand(nX);
+             n=rand(nY);       
         if(field.field[n][m].isEmpty)
         {
             for(i=+r-1;+i<=+r+1;+i++)
@@ -74,9 +75,9 @@ function rand(max) {
             field.bags.push( field.field[n][m]);
         }
     }
-    for(i=0;i<10;i++)
+    for(i=0;i<nY;i++)
     {
-        for(r=0;r<10;r++)
+        for(r=0;r<nX;r++)
         {
             n=field.field[i][r].checkB();
              if(n>0)
@@ -133,7 +134,7 @@ function rand(max) {
             {
                  if(this.y==0&&u==-1)
                     u=0;
-                    if(this.y==9&&u==1)
+                    if(this.y==nY-1&&u==1)
                     continue;
                 for(let p=-1;p<2;p++)
                 {
@@ -141,7 +142,7 @@ function rand(max) {
                     continue;
                     if(this.x==0&&p==-1)
                     p=0;
-                    if(this.x==9&&p==1)
+                    if(this.x==nX-1&&p==1)
                     break;
                     if(field.field[this.y+u][this.x+p].isFilled)
                     {
@@ -188,7 +189,7 @@ function rand(max) {
             
 
         }
-        if(this.y+1!=10)
+        if(this.y+1!=nY)
         {
             if(field.field[this.y+1][this.x].isEmpty)
             {
@@ -212,7 +213,7 @@ function rand(max) {
                 field.field[this.y][this.x-1].open();
             }
         }
-        if(this.x+1!=10)
+        if(this.x+1!=nX)
         {
             if(field.field[this.y][this.x+1].isEmpty)
             {
@@ -224,7 +225,7 @@ function rand(max) {
                 field.field[this.y][this.x+1].open();
             }
         }
-        if(this.x+1!=10&&this.y+1!=10)
+        if(this.x+1!=nX&&this.y+1!=nY)
         {
             if(field.field[this.y+1][this.x+1].isEmpty)
             {
@@ -248,7 +249,7 @@ function rand(max) {
                 field.field[this.y-1][this.x-1].open();
             }
         }
-        if(this.x+1!=10&&this.y-1!=-1)
+        if(this.x+1!=nX&&this.y-1!=-1)
         {
             if(field.field[this.y-1][this.x+1].isEmpty)
             {
@@ -260,7 +261,7 @@ function rand(max) {
                 field.field[this.y-1][this.x+1].open();
             }
         }
-        if(this.x-1!=-1&&this.y+1!=10)
+        if(this.x-1!=-1&&this.y+1!=nY)
         {
             if(field.field[this.y+1][this.x-1].isEmpty)
             {
@@ -284,22 +285,32 @@ function restart()
 
 function start()
 {
+   
+    field.html=document.getElementById("field");
+    field.html.style.setProperty('grid-template-columns', 'repeat(' + nX + ', 1fr)');
+    field.html.style.setProperty('grid-template-raws', 'repeat(' + nY + ', 1fr)');
     localStorage.setItem("auf",15);
     field.bags=[];
     field.play=true;
-    isF=true;
-    field.html=document.getElementById("field");
-    field.field=[[],[],[],[],[],[],[],[],[],[]];
-    field.near=0;
-    for(i=0;i<10;i++)
+    isF=true;    
+    field.field=[];
+    for(i=0;i<nY;i++)
     {
-        for(r=0;r<10;r++)
+        field.field.push([]);
+    }
+    field.near=0;
+    for(i=0;i<nY;i++)
+    {
+        for(r=0;r<nX;r++)
         {
             newC=new cell(i,r);
             field.field[i][r]=newC;
 
         }
     }
+     field.html.getElementsByClassName("node").forEach(element => {element.style.width=field.html.style.width/(nX+2);
+     element.style.height=element.style.width;
+    });
 }
 
 
