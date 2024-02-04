@@ -1,5 +1,6 @@
-nX=20;
-nY=10;
+let nX=5;
+let nY=5;
+let field={};
 
 function WIN()
 {
@@ -83,8 +84,7 @@ function rand(max) {
              if(n>0)
             {
                 field.near++;
-                document.querySelector(`[y="${i}"][x="${r}"]`).innerHTML=document.querySelector(`[y="${i}"][x="${r}"]`).innerHTML.replace(`<img src="png/po.png" alt="">`,`<img src="png/${n}.png" alt="">`);
-
+              
             }
         }
     }
@@ -115,15 +115,14 @@ function rand(max) {
         this.isEmpty=true;
         this.isFilled=false;
         this.isNear=false;
-        field.html.innerHTML+=`<div onclick="tap(this)" class="node" y="${y}" x="${x}"><div oncontextmenu="flag(this)" class="bl"><img class="im" src="png/fl.png" alt=""></div><img src="png/po.png" alt=""></div>`;
-        this.html=document.querySelector(`[y="${y}"][x="${x}"]`);
+        field.html.innerHTML+=`<div onclick="tap(this)" class="node" y="${y}" x="${x}"><div oncontextmenu="flag(this)" class="bl"><img class="im" src="png/fl.png" alt=""></div></div>`;
     }
+
 
     fill()
     {
         this.isEmpty=false;
         this.isFilled=true;
-        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML=document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML.replace(`<img src="png/po.png" alt="">`,`<img src="png/bag.png" alt="">`);
     }
 
     checkB()
@@ -159,6 +158,13 @@ function rand(max) {
     {
         if(!this.opened)
         {
+            if(this.isEmpty)
+            document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+='<img src="png/po.png" alt="">'
+            else if(this.isFilled)
+            document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+='<img src="png/bag.png" alt="">'
+            else if(this.isNear)
+            document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+='<img src="png/bag.png" alt="">'
+            
         document.querySelector(`[y="${this.y}"][x="${this.x}"]`).getElementsByClassName("im")[0].style.animation="anime 0.3s cubic-bezier(0.7, 0, 0.84, 0)";
         setTimeout(`document.querySelector('[y="${this.y}"][x="${this.x}"]').getElementsByClassName("bl")[0].remove()`,300);
         this.opened=true;
@@ -284,11 +290,59 @@ function restart()
 }
 
 function start()
-{
-   
-    field.html=document.getElementById("field");
-    field.html.style.setProperty('grid-template-columns', 'repeat(' + nX + ', 1fr)');
-    field.html.style.setProperty('grid-template-raws', 'repeat(' + nY + ', 1fr)');
+{ 
+     
+    let lvl=3;
+   switch(lvl)
+   {
+       case 1:
+       {
+           nX=10;
+           nY=10;
+            break;
+       }
+       case 2:
+       {
+           if(window.innerWidth>window.innerHeight)
+           {
+            nX=20;
+            nY=10;
+           }
+           else if(window.innerWidth<window.innerHeight)
+           {
+            nX=10;
+            nY=20;
+           }
+           else
+           {
+            nX=14;
+            nY=14;
+           }
+
+           break;
+       }
+       case 3:
+       {
+           nX=20;
+           nY=20;
+           break;
+       }
+   }
+  field.html=document.getElementById("field");
+        w=0;
+    if(window.innerWidth>window.innerHeight&&window.innerWidth/(nX+2)*(nY+2)<=window.innerHeight)
+    {
+        w=window.innerWidth/(nX+2);
+    }
+    else
+    {
+        w=window.innerHeight/(nY+2);
+    }
+    field.html.style.setProperty('grid-template-columns', 'repeat(' + nX + ', '+w+'px)');
+    field.html.style.setProperty('grid-template-rows', 'repeat(' + nY + ','+w+'px)');
+    field.html.style.width=`${w*nX}px`;
+    field.html.style.height=`${w*nY}px`;
+  
     localStorage.setItem("auf",15);
     field.bags=[];
     field.play=true;
@@ -304,13 +358,11 @@ function start()
         for(r=0;r<nX;r++)
         {
             newC=new cell(i,r);
-            field.field[i][r]=newC;
+            field.field[i].push(newC);
 
         }
     }
-     field.html.getElementsByClassName("node").forEach(element => {element.style.width=field.html.style.width/(nX+2);
-     element.style.height=element.style.width;
-    });
+
 }
 
 
