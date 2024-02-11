@@ -1,6 +1,65 @@
-let nX=5;
-let nY=5;
 let field={};
+
+field.play=false;   
+nX=10;
+nY=10;
+
+function chooseLvl(lvl)
+{
+
+switch (+lvl)
+{
+    case 1:
+        document.body.innerHTML+=`<style>
+        .node:hover
+        {
+            z-index: 11;
+            scale: 1.1 1.1;
+        }
+        </style>
+        `;
+        nX=10;
+        nY=10;
+    break;
+
+    case 2: 
+    document.body.innerHTML+=`<style>
+    .node:hover
+    {
+        z-index: 11;
+        scale: 1.2 1.2;
+    }
+    </style>
+    `;
+        nX=15;
+        nY=15;
+    break
+
+    case 3:
+        document.body.innerHTML+=`<style>
+        .node:hover
+        {
+            z-index: 11;
+            scale: 1.25 1.25;
+        }
+        </style>
+        `;
+        if(window.innerHeight>window.innerWidth)
+        {
+        nX=16;
+        nY=25;
+        }
+        else
+        {
+        nY=16;
+        nX=25;        
+        }
+    break;
+}
+document.getElementById("lvl").innerHTML="";
+start();
+}
+
 
 function WIN()
 {
@@ -48,7 +107,7 @@ function rand(max) {
  
   function spawn(r,c)
   {
-    mines=(2*nX+2*nY)/1.8;
+    mines=nX*nY*0.15;
     while(mines>0)
     {
              fail=false;
@@ -76,20 +135,9 @@ function rand(max) {
             field.bags.push( field.field[n][m]);
         }
     }
-    for(i=0;i<nY;i++)
-    {
-        for(r=0;r<nX;r++)
-        {
-            n=field.field[i][r].checkB();
-             if(n>0)
-            {
-                field.near++;
-              
-            }
-        }
-    }
            
     }
+           
 
   function flag(val)
   {
@@ -103,6 +151,16 @@ function rand(max) {
   { 
     isF=false;
     spawn(val.attributes.y.value,val.attributes.x.value);
+    for(i of field.field)
+    for(r of i)
+    {
+        r.n=r.checkB();
+        if(r.n>0)
+        {
+            field.near++;
+        document.querySelector(`[y="${r.y}"][x="${r.x}"]`).innerHTML+=`<img src="png/${+r.n}.png" alt="">`;
+        }
+    }
   }
  
  class cell
@@ -115,14 +173,13 @@ function rand(max) {
         this.isEmpty=true;
         this.isFilled=false;
         this.isNear=false;
-        field.html.innerHTML+=`<div onclick="tap(this)" class="node" y="${y}" x="${x}"><div oncontextmenu="flag(this)" class="bl"><img class="im" src="png/fl.png" alt=""></div></div>`;
     }
-
 
     fill()
     {
         this.isEmpty=false;
         this.isFilled=true;
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+=`<img src="png/bag.png" alt="">`;
     }
 
     checkB()
@@ -156,26 +213,27 @@ function rand(max) {
 
     open()
     {
+        
         if(!this.opened)
         {
             if(this.isEmpty)
-            document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+='<img src="png/po.png" alt="">'
-            else if(this.isFilled)
-            document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+='<img src="png/bag.png" alt="">'
+            {
+                document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+=`<img src="png/po.png" alt="">`;    
+            }
             else if(this.isNear)
-            document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+='<img src="png/bag.png" alt="">'
-            
-        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).getElementsByClassName("im")[0].style.animation="anime 0.3s cubic-bezier(0.7, 0, 0.84, 0)";
-        setTimeout(`document.querySelector('[y="${this.y}"][x="${this.x}"]').getElementsByClassName("bl")[0].remove()`,300);
-        this.opened=true;
-        if(this.isNear)
-        {
-            field.near--;
+            {
+           field.near--;
             if(field.near==0)
             {
                 WIN();
             }
-        }
+            }
+
+
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).getElementsByClassName("im")[0].style.animation="anime 0.3s cubic-bezier(0.7, 0, 0.84, 0)";
+        setTimeout(`document.querySelector('[y="${this.y}"][x="${this.x}"]').getElementsByClassName("bl")[0].remove()`,300);
+        this.opened=true;
+
         }
     }
     openArea()
@@ -285,64 +343,29 @@ function restart()
 {
     
     document.getElementById("field").innerHTML="";
+    document.getElementById("lvl").innerHTML=`<div id="lvl"><img id="bgLvl"  src="png/lvl.png" alt=""><div id="bs"><div onclick="chooseLvl(this.attributes.lvl.value)" lvl="1" class="lvlB"> <img class="nh" src="png/lvl1.png" alt=""><img class="h" src="png/lvl1H.png" alt=""></div><div onclick="chooseLvl(this.attributes.lvl.value)" lvl="2" class="lvlB"> <img class="nh" src="png/lvl2.png" alt=""><img class="h" src="png/lvl2H.png" alt=""></div><div onclick="chooseLvl(this.attributes.lvl.value)" lvl="3" class="lvlB"> <img class="nh" src="png/lvl3.png" alt=""><img class="h" src="png/lvl3H.png" alt=""></div></div></div>`;
     document.getElementById("end").innerHTML=`<img id="win" src="png/win.png" alt=""><img id="lose" src="png/lose.png" alt="">       <div onmouseover="document.getElementById('reW').style.opacity='0';document.getElementById('reL').style.opacity='0';document.getElementById('reWH').style.opacity='1';document.getElementById('reLH').style.opacity='1';" onclick="restart()" id="re"><img id="reW" src="png/reW.png" alt=""><img  id="reWH" src="png/reWH.png" alt="">    <img id="reL" src="png/reL.png" alt=""> <img id="reLH" src="png/reLH.png" alt="">  </div>`;
-    start();
 }
 
 function start()
 { 
-     
-    let lvl=3;
-   switch(lvl)
-   {
-       case 1:
-       {
-           nX=10;
-           nY=10;
-            break;
-       }
-       case 2:
-       {
-           if(window.innerWidth>window.innerHeight)
-           {
-            nX=20;
-            nY=10;
-           }
-           else if(window.innerWidth<window.innerHeight)
-           {
-            nX=10;
-            nY=20;
-           }
-           else
-           {
-            nX=14;
-            nY=14;
-           }
 
-           break;
-       }
-       case 3:
-       {
-           nX=20;
-           nY=20;
-           break;
-       }
-   }
-  field.html=document.getElementById("field");
-        w=0;
-    if(window.innerWidth>window.innerHeight&&window.innerWidth/(nX+2)*(nY+2)<=window.innerHeight)
-    {
-        w=window.innerWidth/(nX+2);
-    }
+    field.html=document.getElementById("field");
+    if(window.innerWidth/nX<window.innerHeight/nY)
+    w=window.innerWidth/(nX+2);   
     else
+    w=window.innerHeight/(nY+2);   
+    field.html.style.setProperty('grid-template-columns', 'repeat(' + nX + ', '+ w +'px)');
+    field.html.style.setProperty('grid-template-rows', 'repeat(' + nY + ','+ w +'px)');
+    
+    for(i=0;i<nY;i++)
     {
-        w=window.innerHeight/(nY+2);
+        for(r=0;r<nX;r++)
+        {
+    field.html.innerHTML+=`<div onclick="tap(this)" class="node" y="${i}" x="${r}"><div oncontextmenu="flag(this)" class="bl"><img class="im" src="png/fl.png" alt=""></div></div>`;
+        }
     }
-    field.html.style.setProperty('grid-template-columns', 'repeat(' + nX + ', '+w+'px)');
-    field.html.style.setProperty('grid-template-rows', 'repeat(' + nY + ','+w+'px)');
-    field.html.style.width=`${w*nX}px`;
-    field.html.style.height=`${w*nY}px`;
-  
+    
     localStorage.setItem("auf",15);
     field.bags=[];
     field.play=true;
@@ -358,11 +381,10 @@ function start()
         for(r=0;r<nX;r++)
         {
             newC=new cell(i,r);
-            field.field[i].push(newC);
+            field.field[i][r]=newC;
 
         }
-    }
-
+    };
 }
 
 
@@ -407,8 +429,6 @@ function tap(val)
     }   
 }
 
-
-start();
 
 
 
