@@ -5,32 +5,32 @@ html, body
     margin: 0;
     display: flex;
     align-items: center;
-    justify-content: center;   
+    justify-content: center;
     flex-direction: column;
     translate: 0 -20px;
 }
 
 #bs
 {
-    translate:0 50%;
     z-index: 1;
     height: 17%;
     width: 90%;
     display: flex;
     align-items: center;
     justify-content: start;
+    transform:translateY(50%);
     gap: 3%;
 }
 
 .nepon
 {
-    width: 12.5%;
+    width: 15.5%;
     translate: 0 -25%;
 }
 
 .pon
 {
-    width: 12.5%;
+    width: 15.5%;
 }
 
 .pon:hover
@@ -38,19 +38,21 @@ html, body
     translate: 0 -5%;
 }
 
-#container1
+#container1,#container2,#container3
 {
     position: absolute;
-    translate:-50% -50%;
-    top:50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
     left: 50%;
-    height: 81%;
+}
+
+#container1
+{
+    
     box-sizing: border-box;
     border: solid 10px rgb(2,176,93);
     border-radius: 50px;
     background-color: rgb(191,254,115);
-    z-index: 2;
-    width: 94%;
     display: flex;
     align-items: start;
     justify-content: center;
@@ -63,12 +65,9 @@ html, body
     border: solid 10px rgb(2,176,93);
     border-radius: 50px;
     background-color: rgb(191,254,115);
-    z-index: 2;
-    width: 94%;
     display: flex;
-    align-items: start;
-    justify-content: center;
-    padding: 5% 2%;
+    align-items: center;
+    justify-content: space-between;
     gap: 5%;
 }
 #container3
@@ -77,8 +76,6 @@ html, body
     border: solid 10px rgb(2,176,93);
     border-radius: 50px;
     background-color: rgb(191,254,115);
-    z-index: 2;
-    width: 94%;
     display: flex;
     align-items: start;
     justify-content: center;
@@ -91,13 +88,18 @@ html, body
     border: solid 7px rgb(2,176,93);
     border-radius: 30px;
     background-color: rgb(150, 216, 70);
-    z-index: 2;
     width: 30%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: start;
     flex-direction: column;
+}
+
+.bl2
+{
+    border: solid 3px rgb(2,176,93);
+    background-color: rgb(150, 216, 70);
 }
 
 .prev
@@ -148,11 +150,39 @@ img
 
 .op1
 {
+    height: 100%;
+    width: 100%;
     opacity: 1;
 }
 
 .op0
 {
+    width: 0;
     height: 0;
     opacity: 0;
+}
+
+#conts
+{
+    height: 81%;
+    position: relative;
+    width: 94%;
+    z-index: 2;
+}
+
+#tools
+{
+    height: 100%;
+    width: 20%;
+    box-sizing: border-box;
+    border: solid 10px rgb(0, 95, 49);
+    border-radius: 40px;
+    background-color: rgb(145, 209, 66);
+}
+
+#field
+{
+    border: solid 3px rgb(2,176,93);
+    display: grid;
+    grid-gap: 0px;
 }

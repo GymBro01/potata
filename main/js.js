@@ -1,6 +1,29 @@
+localStorage.setItem("x",10);
+localStorage.setItem("y",10);
 let choosed=1;
+let field={x:+localStorage.x, y:+localStorage.y}
 
-update();
+function printField()
+{
+    field.html=document.getElementById("field");
+    if(window.innerWidth*0.94/field.x<window.innerHeight*0.81/field.y)
+    wid=window.innerWidth*0.94/(field.x+2);   
+    else
+    wid=window.innerHeight*0.81/(field.y+2);   
+    field.html.style.width=`${wid*field.x-1.5}px`;
+    field.html.style.height=`${wid*field.y}px`;
+    field.html.style.marginRight=`${wid}px`;
+    field.html.style.setProperty('grid-template-columns', 'repeat(' + field.x + ','+ wid +'px)');
+    field.html.style.setProperty('grid-template-rows', 'repeat(' + field.y + ','+ wid +'px)');
+    
+    for(i=0;i<field.y;i++)
+    {
+        for(r=0;r<field.x;r++)
+        {
+            field.html.innerHTML+=`<div class="bl2" y="${i}" x="${r}"></div>`;
+        }
+    }
+}
 
 function choose(x)
 {
@@ -42,3 +65,6 @@ function update()
 {
     
 }
+
+update();
+printField();

@@ -348,8 +348,7 @@ function restart()
 }
 
 function start()
-{ 
-
+{
     field.html=document.getElementById("field");
     if(window.innerWidth/nX<window.innerHeight/nY)
     w=window.innerWidth/(nX+2);   
