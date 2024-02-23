@@ -1,5 +1,6 @@
 localStorage.setItem("x",10);
 localStorage.setItem("y",10);
+let tool="n";
 let choosed=1;
 let field={x:+localStorage.x, y:+localStorage.y}
 
@@ -7,20 +8,20 @@ function printField()
 {
     field.html=document.getElementById("field");
     if(window.innerWidth*0.94/field.x<window.innerHeight*0.81/field.y)
-    wid=window.innerWidth*0.94/(field.x+2);   
+    wid=Math.floor(window.innerWidth*0.94/(field.x+2));   
     else
-    wid=window.innerHeight*0.81/(field.y+2);   
-    field.html.style.width=`${wid*field.x-1.5}px`;
+    wid=Math.floor(window.innerHeight*0.81/(field.y+2));   
+    field.html.style.width=`${wid*field.x}px`;
     field.html.style.height=`${wid*field.y}px`;
     field.html.style.marginRight=`${wid}px`;
-    field.html.style.setProperty('grid-template-columns', 'repeat(' + field.x + ','+ wid +'px)');
+    field.html.style.setProperty('grid-template-columns', 'repeat(' + field.x + ', '+ wid +'px)');
     field.html.style.setProperty('grid-template-rows', 'repeat(' + field.y + ','+ wid +'px)');
     
     for(i=0;i<field.y;i++)
     {
         for(r=0;r<field.x;r++)
         {
-            field.html.innerHTML+=`<div class="bl2" y="${i}" x="${r}"></div>`;
+            field.html.innerHTML+=`<div onclick="tap(event.target.offsetParent)" class="bl2" y="${i}" x="${r}"><img src="png/node.png" alt=""></div>`;
         }
     }
 }
@@ -64,6 +65,48 @@ function choose(x)
 function update()
 {
     
+}
+
+function getTool(ele)
+{
+    if(tool!="n")
+    el.classList.remove("scl");
+    el=ele.target.offsetParent;
+    switch (el.attributes.id.value)
+    {
+            case "motiga":
+            if(tool=="m")
+            {
+                tool="n";
+                el.classList.remove("scl");
+                break;
+            }
+            tool="m";
+            el.classList.add("scl");
+            break;
+            case "vedro":
+            if(tool=="v")
+            {
+                tool="n";
+                el.classList.remove("scl");
+                break;
+            }
+            tool="v";
+            el.classList.add("scl");
+            break;
+            case "lopata":
+            if(tool=="l")
+            {
+                tool="n";
+                el.classList.remove("scl");
+                break;
+            }
+            tool="l";
+            el.classList.add("scl");
+            break;
+            default:
+            break;
+    }
 }
 
 update();
