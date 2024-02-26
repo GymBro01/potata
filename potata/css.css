@@ -2,14 +2,71 @@ html, body
 {
     height: 100%;
     width: 100%;
-    box-sizing: border-box;
-    display: flex;
+    box-sizing: border-box;   
+    display:flex;
     align-items: center;
-    justify-content: center;                     
+    justify-content: center;
+
+}
+
+#bgLvl
+{
+    position: absolute;
+    top:50%;
+    left:50%;
+    translate: -50% -50%;
+}
+
+#lvl
+{
+   position: relative;
+    height: 90%;
+    z-index: 900;
+}
+
+#bs
+{
+    position: absolute;
+    top:50%;
+    left:50%;
+    translate: -50% -40%;
+    z-index: 901;
+    height: 50%;
+    width: 50%;
+}
+
+#bgLvl
+{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    
+}
+
+
+.lvlB
+{
+    margin-top: 10%;
+    height: 30%;
+}
+
+.nh
+{
+    position: relative;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+
+.kostil
+{
+    width: 0;
 }
 
 #bg
 {
+    background-color: rgb(16, 157, 48);
     height: 100%;
     width: 100%;
     position: fixed;
@@ -18,21 +75,19 @@ html, body
 
 #field
 {
-    min-width: 680px;
-    height: 80%;
-    margin: 0 20px;
+    margin: 20px;
     position: absolute;
     top: calc(50%-300px);
     left: calc(50%-300px);
     display: grid;
     grid-gap: 0px;
-    border:solid 2px black;
 }
 
 
 .node
 {
-    
+    scale: 1 1;
+    z-index: 10;
     padding: 0;
     border:solid black 0px;
     height: 100%;
@@ -44,7 +99,7 @@ html, body
 }
 img
 {
-    
+    box-sizing: border-box;    
     height: 100%;
     width: 100%;
     z-index: 10;
@@ -52,7 +107,6 @@ img
 
 .node img
 {
-    box-sizing: border-box;
     border:solid black 2px;
 }
 
@@ -63,10 +117,6 @@ height: 0;
 width: 0;
 }
 
-#lose
-{
-   
-}
 
 #end
 {
@@ -123,7 +173,16 @@ width: 0;
     z-index: 905;
 }
 
+.h
+{
+    z-index: 902;
+    translate: 0 -105%;
+}
 
+.nh:hover
+{
+    opacity: 0;
+}
 
 
 @keyframes anime
