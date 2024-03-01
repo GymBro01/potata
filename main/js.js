@@ -1,8 +1,43 @@
 localStorage.setItem("x",10);
 localStorage.setItem("y",10);
+
+
+
+class cell
+{
+    constructor(y,x)
+    {
+        this.diged=false;
+        this.dirt=false;
+        this.x=x;
+        this.y=y;
+        this.grass=true;
+        this.seeded=false;
+    }
+
+    fill()
+    {
+        this.isEmpty=false;
+        this.isFilled=true;
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+=`<img src="png/bag.png" alt="">`;
+    }
+
+    dig()
+    {      
+        if(!this.diged)
+        {
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML=`<img class="d" src="png/nodeD.png" alt="">`+ document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML;
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).getElementsByClassName("g")[0].style.animation="anime 0.3s cubic-bezier(0.7, 0, 0.84, 0)";
+        setTimeout(`document.querySelector('[y="${this.y}"][x="${this.x}"]').getElementsByClassName("g")[0].remove()`,300);
+        this.opened=true;
+        }
+    }
+   
+}
+
 let tool="n";
 let choosed=1;
-let field={x:+localStorage.x, y:+localStorage.y}
+let field={x:+localStorage.x, y:+localStorage.y, field:[]}
 
 function printField()
 {
@@ -19,15 +54,24 @@ function printField()
     
     for(i=0;i<field.y;i++)
     {
+        field.field.push([]);
         for(r=0;r<field.x;r++)
         {
-            field.html.innerHTML+=`<div onclick="tap(event.target.offsetParent)" class="bl2" y="${i}" x="${r}"><img src="png/node.png" alt=""></div>`;
+            newC=new cell(i,r);
+            field.field[i][r]=newC;
+            field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeG.png" alt=""></div>`;
         }
     }
 }
 
 function choose(x)
 {
+    elem=document.getElementsByClassName("scl")[0];
+    if(elem!=undefined)
+    {
+    tool="n";
+    elem.classList.remove("scl");
+    }
     document.getElementsByClassName("nepon")[0].attributes.class.value="pon";
     x.attributes.class.value="nepon";
     choosed=x.attributes.x.value;
@@ -68,44 +112,142 @@ function update()
 }
 
 function getTool(ele)
-{
-    if(tool!="n")
-    el.classList.remove("scl");
-    el=ele.target.offsetParent;
-    switch (el.attributes.id.value)
+{   
+    document.getElementById('m').classList.add("op0");
+    document.getElementById('m').classList.remove("op1");
+    document.getElementById('v').classList.add("op0");
+    document.getElementById('v').classList.remove("op1");
+    document.getElementById('l').classList.add("op0");
+    document.getElementById('l').classList.remove("op1");
+    t=document.getElementsByClassName("tool");
+    t[0].classList.remove("scl");
+    t[1].classList.remove("scl");
+    t[2].classList.remove("scl");
+    switch (ele.target.offsetParent.attributes.id.value)
     {
-            case "motiga":
-            if(tool=="m")
+        case "motiga":
+            if(tool!="m")
+            {
+                document.getElementById('m').classList.add("op1");
+                document.getElementById('m').classList.remove("op0");
+                t[0].classList.add("scl");
+                tool="m";
+            }
+            else
             {
                 tool="n";
-                el.classList.remove("scl");
-                break;
             }
-            tool="m";
-            el.classList.add("scl");
-            break;
-            case "vedro":
-            if(tool=="v")
+        break;
+
+
+        case "vedro":
+            if(tool!="v")
+            {
+                document.getElementById('v').classList.add("op1");
+                document.getElementById('v').classList.remove("op0");
+                t[1].classList.add("scl");
+                tool="v";
+            }
+            else
             {
                 tool="n";
-                el.classList.remove("scl");
-                break;
             }
-            tool="v";
-            el.classList.add("scl");
-            break;
-            case "lopata":
-            if(tool=="l")
+        break;
+
+
+        case "lopata":
+            if(tool!="l")
+            {
+                document.getElementById('l').classList.add("op1");
+                document.getElementById('l').classList.remove("op0");
+                t[2].classList.add("scl");
+                tool="l";
+            }
+            else
             {
                 tool="n";
-                el.classList.remove("scl");
-                break;
             }
-            tool="l";
-            el.classList.add("scl");
-            break;
-            default:
-            break;
+        break;
+
+
+        default:
+        break;
+    }
+
+
+}
+
+let tl=document.getElementById("tl").style;
+document.getElementById("container2").addEventListener("mouseleave",(event)=>
+{
+    document.getElementById("tl").classList.remove("op1");
+    document.getElementById("tl").classList.add("op0");
+});
+document.getElementById("container2").addEventListener("mouseenter",()=>
+{
+    document.getElementById("tl").classList.remove("op0");
+    document.getElementById("tl").classList.add("op1");
+});
+let lol=document.getElementById("container2").querySelectorAll("img");
+for(i of lol)
+{
+    i.addEventListener("mouseenter",()=>
+{
+    document.getElementById("tl").classList.remove("op0");
+    document.getElementById("tl").classList.add("op1");
+});
+}
+document.body.addEventListener("mousemove",(event)=>
+{
+    tl.left=`${event.pageX+1}px`;
+    tl.top=`${event.pageY}px`;
+    
+});
+
+function tap(el)
+{
+    x=el.attributes.x.value;
+    y=el.attributes.y.value;
+    switch (tool)
+    {
+        case "l":
+            if(field.field[y][x].grass==true)
+            {
+            field.field[y][x].grass=false;
+            field.field[y][x].dirt=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("G","N");
+            }
+            else if(field.field[y][x].seeded==true)
+            {
+            field.field[y][x].seeded=false;
+            field.field[y][x].dirt=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("S","N");
+            }
+            else if(field.field[y][x].diged==true)
+            {
+            field.field[y][x].diged=false;
+            field.field[y][x].dirt=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("D","N");
+            }
+        break;
+
+        case "m":
+            if(field.field[y][x].seeded==true)
+            {
+            field.field[y][x].seeded=false;
+            field.field[y][x].diged=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("S","D");
+            }
+            else if(field.field[y][x].dirt==true)
+            {
+            field.field[y][x].dirt=false;
+            field.field[y][x].diged=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("N","D");
+            }
+        break;
+    
+        default:
+        break;
     }
 }
 
