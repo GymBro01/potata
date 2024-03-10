@@ -1,18 +1,34 @@
 localStorage.setItem("x",10);
 localStorage.setItem("y",10);
-
+localStorage.setItem("water",9);
+fl=JSON.stringify([
+"oollllllll",
+"oollllllll",
+"llllllllll",
+"llllllllll",
+"llllllllll",
+"llllllllll",
+"llllllllll",
+"llllllllll",
+"llllllllll",
+"llllllllll"
+]);
+localStorage.setItem("field", fl);
+fild=JSON.parse(localStorage.field);
 
 
 class cell
 {
     constructor(y,x)
     {
+        this.open=false;
         this.diged=false;
         this.dirt=false;
         this.x=x;
         this.y=y;
         this.grass=true;
         this.seeded=false;
+        this.wet=false;
     }
 
     fill()
@@ -26,7 +42,7 @@ class cell
     {      
         if(!this.diged)
         {
-        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML=`<img class="d" src="png/nodeD.png" alt="">`+ document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML;
+        document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML=`<img class="d" src="png/nodeDD.png" alt="">`+ document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML;
         document.querySelector(`[y="${this.y}"][x="${this.x}"]`).getElementsByClassName("g")[0].style.animation="anime 0.3s cubic-bezier(0.7, 0, 0.84, 0)";
         setTimeout(`document.querySelector('[y="${this.y}"][x="${this.x}"]').getElementsByClassName("g")[0].remove()`,300);
         this.opened=true;
@@ -37,7 +53,7 @@ class cell
 
 let tool="n";
 let choosed=1;
-let field={x:+localStorage.x, y:+localStorage.y, field:[]}
+let field={x:+localStorage.x, y:+localStorage.y, field:[], water:9, coins:localStorage.coins}
 
 function printField()
 {
@@ -59,9 +75,20 @@ function printField()
         {
             newC=new cell(i,r);
             field.field[i][r]=newC;
+            if(fild[i][r]=='o')
+            {
+                
             field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeG.png" alt=""></div>`;
+            }
+            else
+            {
+            field.field[i][r].open=true;
+            field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeL.png" alt=""></div>`;
+            }
         }
     }
+
+    document.body.innerHTML=document.body.innerHTML.replace("wtf", `${field.water}`);
 }
 
 function choose(x)
@@ -225,9 +252,19 @@ function tap(el)
             }
             else if(field.field[y][x].diged==true)
             {
-            field.field[y][x].diged=false;
-            field.field[y][x].dirt=true;
-            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("D","N");
+                if(field.field[y][x].wet==true)
+                {
+                field.field[y][x].diged=false;
+                field.field[y][x].wet=false;
+                field.field[y][x].dirt=true;
+                document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DW","N");
+                }
+                else
+                {
+                field.field[y][x].diged=false;
+                field.field[y][x].dirt=true;
+                document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DD","N");
+                }
             }
         break;
 
@@ -236,14 +273,33 @@ function tap(el)
             {
             field.field[y][x].seeded=false;
             field.field[y][x].diged=true;
-            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("S","D");
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("S","DD");
             }
             else if(field.field[y][x].dirt==true)
             {
             field.field[y][x].dirt=false;
             field.field[y][x].diged=true;
-            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("N","D");
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("N","DD");
             }
+        break;
+
+        case "v":
+        if(field.water>0)
+        {
+            if(field.field[y][x].seeded==true&&field.field[y][x].wet==false)
+            {
+            field.field[y][x].wet=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DD","DW");
+            field.water--;
+            }
+            else if(field.field[y][x].diged==true&&field.field[y][x].wet==false)
+            {
+            field.field[y][x].wet=true;
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DD","DW");
+            field.water--;
+            }
+            document.getElementById("vn").attributes.src.value=`png/${field.water}.png`;
+        }
         break;
     
         default:

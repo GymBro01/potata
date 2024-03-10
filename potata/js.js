@@ -6,7 +6,7 @@ nY=10;
 
 function chooseLvl(lvl)
 {
-
+lol=+lvl;
 switch (+lvl)
 {
     case 1:
@@ -79,6 +79,23 @@ function WIN()
     field.play=false;
     document.getElementById("end").style.animation="end 1s cubic-bezier(0.7, 0, 0.84, 0)";
     setTimeout('document.getElementById("end").style.scale="1 1"; document.getElementById("re").style.opacity="1";document.getElementById("reW").style.opacity="1";',1000)`,1000);
+    switch (+lol)
+    {
+        case 1:
+            localStorage.coins+=5;
+        break;
+
+        case 2:
+            localStorage.coins+=10;
+        break;
+
+        case 3:
+            localStorage.coins+=20;
+        break;
+    
+        default:
+        break;
+    }
 }
 
 function LOSE()

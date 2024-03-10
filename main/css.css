@@ -238,7 +238,7 @@ img
     transform: scale(1.1);
 }
 
-.scl
+.scl img
 {
     opacity: 0.6;
 }
@@ -246,6 +246,11 @@ img
 .bl2:hover
 {
     scale: 1.1;
+}
+
+#vn
+{
+    opacity: 1 !important;
 }
 
 @keyframes anime
