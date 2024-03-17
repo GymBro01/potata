@@ -204,7 +204,6 @@ function getTool(ele)
 
 }
 
-let tl=document.getElementById("tl").style;
 document.getElementById("container2").addEventListener("mouseleave",(event)=>
 {
     document.getElementById("tl").classList.remove("op1");
@@ -226,8 +225,8 @@ for(i of lol)
 }
 document.body.addEventListener("mousemove",(event)=>
 {
-    tl.left=`${event.pageX+1}px`;
-    tl.top=`${event.pageY}px`;
+    document.getElementById("tl").style.left=`${event.pageX+1}px`;
+    document.getElementById("tl").style.top=`${event.pageY}px`;
     
 });
 
