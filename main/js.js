@@ -1,21 +1,3 @@
-localStorage.setItem("x",10);
-localStorage.setItem("y",10);
-localStorage.setItem("water",9);
-fl=JSON.stringify([
-"oollllllll",
-"oollllllll",
-"llllllllll",
-"llllllllll",
-"llllllllll",
-"llllllllll",
-"llllllllll",
-"llllllllll",
-"llllllllll",
-"llllllllll"
-]);
-localStorage.setItem("field", fl);
-fild=JSON.parse(localStorage.field);
-
 
 class cell
 {
@@ -29,6 +11,8 @@ class cell
         this.grass=true;
         this.seeded=false;
         this.wet=false;
+        this.lvl=0;
+        this.psheno=false;
     }
 
     fill()
@@ -37,7 +21,6 @@ class cell
         this.isFilled=true;
         document.querySelector(`[y="${this.y}"][x="${this.x}"]`).innerHTML+=`<img src="png/bag.png" alt="">`;
     }
-
     dig()
     {      
         if(!this.diged)
@@ -51,45 +34,107 @@ class cell
    
 }
 
-let tool="n";
-let choosed=1;
-let field={x:+localStorage.x, y:+localStorage.y, field:[], water:9, coins:localStorage.coins}
+if(localStorage.field==undefined)
+{
+    printField();
+}
+else
+{
+    let field=JSON.parse(localStorage.field);
+    field.html=document.getElementById("field");
+document.getElementById("cnN").innerText=field.coins;
+document.getElementById("kvN").innerText=field.kvas;
+    if(window.innerWidth*0.94/10<window.innerHeight*0.81/10)
+    wid=Math.floor(window.innerWidth*0.94/(10+2));   
+    else
+    wid=Math.floor(window.innerHeight*0.81/(10+2));   
+    field.html.style.width=`${wid*10}px`;
+    field.html.style.height=`${wid*10}px`;
+    field.html.style.marginRight=`${wid}px`;
+    field.html.style.setProperty('grid-template-columns', 'repeat(' + 10 + ', '+ wid +'px)');
+    field.html.style.setProperty('grid-template-rows', 'repeat(' + 10 + ','+ wid +'px)');
+    for(i=0;i<10;i++)
+        {
+            for(r=0;r<10;r++)
+            {
+                if(field.field[i][r].open)
+                {
+                if(field.field[i][r].dirt)
+                field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeN.png" alt=""></div>`;
+                else if(field.field[i][r].grass)
+                field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeG.png" alt=""></div>`;
+                else if(field.field[i][r].diged)
+                    {
+                        if(field.field[i][r].wet)
+                    field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeDW.png" alt=""></div>`;
+                        else
+                    field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeDD.png" alt=""></div>`;
+                    }
+                else if(field.field[i][r].seeded)
+                    field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/node${field.field[i][r].lvl}.png" alt=""></div>`;
+                else if(field.field[i][r].psheno)
+                    field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodePSH.png" alt=""></div>`;
+                }
+                else
+                {
+                field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeL.png" alt=""></div>`;
+                }
+            }
+        }
+}
 
 function printField()
 {
+    let field={};
+    field.field=[];
+    field.coins=0;
+    field.water=0;
+    field.lvl=0;
+    field.seeds=0;
+    field.kvas=0;
+    field.psheno=0;
     field.html=document.getElementById("field");
-    if(window.innerWidth*0.94/field.x<window.innerHeight*0.81/field.y)
-    wid=Math.floor(window.innerWidth*0.94/(field.x+2));   
-    else
-    wid=Math.floor(window.innerHeight*0.81/(field.y+2));   
-    field.html.style.width=`${wid*field.x}px`;
-    field.html.style.height=`${wid*field.y}px`;
-    field.html.style.marginRight=`${wid}px`;
-    field.html.style.setProperty('grid-template-columns', 'repeat(' + field.x + ', '+ wid +'px)');
-    field.html.style.setProperty('grid-template-rows', 'repeat(' + field.y + ','+ wid +'px)');
-    
-    for(i=0;i<field.y;i++)
+    document.getElementById("cnN").innerText=field.coins;
+    document.getElementById("kvN").innerText=field.kvas;
+        if(window.innerWidth*0.94/10<window.innerHeight*0.81/10)
+        wid=Math.floor(window.innerWidth*0.94/(10+2));   
+        else
+        wid=Math.floor(window.innerHeight*0.81/(10+2));   
+        field.html.style.width=`${wid*10}px`;
+        field.html.style.height=`${wid*10}px`;
+        field.html.style.marginRight=`${wid}px`;
+        field.html.style.setProperty('grid-template-columns', 'repeat(' + 10 + ', '+ wid +'px)');
+        field.html.style.setProperty('grid-template-rows', 'repeat(' + 10 + ','+ wid +'px)');
+    for(i=0;i<10;i++)
     {
         field.field.push([]);
-        for(r=0;r<field.x;r++)
+        for(r=0;r<10;r++)
         {
             newC=new cell(i,r);
             field.field[i][r]=newC;
-            if(fild[i][r]=='o')
+            if(i<=1&&r<=1)
             {
-                
+                field.field[i][r].open=true;
             field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeG.png" alt=""></div>`;
             }
             else
             {
-            field.field[i][r].open=true;
+            field.field[i][r].open=false;
             field.html.innerHTML+=`<div onclick="if(event.target.nodeName=='IMG') tap(event.target.offsetParent);else tap(event.target)" class="bl2" y="${i}" x="${r}"><img class="g" src="png/nodeL.png" alt=""></div>`;
             }
         }
     }
-
-    document.body.innerHTML=document.body.innerHTML.replace("wtf", `${field.water}`);
+    localStorage.setItem("field",JSON.stringify(field));
 }
+
+
+
+let tool="n";
+let choosed=1;
+let field=JSON.parse(localStorage.field);
+
+   
+
 
 function choose(x)
 {
@@ -134,29 +179,26 @@ function choose(x)
 }
 
 function update()
-{
-    
+{   
+    document.getElementById("vn").src=`png/${field.water}.png`;
+    document.getElementById("sn").src=`png/${field.seeds}.png`;
+    document.getElementById("cnN").innerText=field.coins;
+    document.getElementById("kvN").innerText=field.kvas;
+    localStorage.setItem("field",JSON.stringify(field));
 }
 
 function getTool(ele)
 {   
-    document.getElementById('m').classList.add("op0");
-    document.getElementById('m').classList.remove("op1");
-    document.getElementById('v').classList.add("op0");
-    document.getElementById('v').classList.remove("op1");
-    document.getElementById('l').classList.add("op0");
-    document.getElementById('l').classList.remove("op1");
     t=document.getElementsByClassName("tool");
     t[0].classList.remove("scl");
     t[1].classList.remove("scl");
     t[2].classList.remove("scl");
+    t[3].classList.remove("scl");
     switch (ele.target.offsetParent.attributes.id.value)
     {
         case "motiga":
             if(tool!="m")
             {
-                document.getElementById('m').classList.add("op1");
-                document.getElementById('m').classList.remove("op0");
                 t[0].classList.add("scl");
                 tool="m";
             }
@@ -170,8 +212,6 @@ function getTool(ele)
         case "vedro":
             if(tool!="v")
             {
-                document.getElementById('v').classList.add("op1");
-                document.getElementById('v').classList.remove("op0");
                 t[1].classList.add("scl");
                 tool="v";
             }
@@ -185,10 +225,21 @@ function getTool(ele)
         case "lopata":
             if(tool!="l")
             {
-                document.getElementById('l').classList.add("op1");
-                document.getElementById('l').classList.remove("op0");
                 t[2].classList.add("scl");
                 tool="l";
+            }
+            else
+            {
+                tool="n";
+            }
+        break;
+
+
+        case "seed":
+            if(tool!="s")
+            {
+                t[3].classList.add("scl");
+                tool="s";
             }
             else
             {
@@ -204,40 +255,27 @@ function getTool(ele)
 
 }
 
-document.getElementById("container2").addEventListener("mouseleave",(event)=>
-{
-    document.getElementById("tl").classList.remove("op1");
-    document.getElementById("tl").classList.add("op0");
-});
-document.getElementById("container2").addEventListener("mouseenter",()=>
-{
-    document.getElementById("tl").classList.remove("op0");
-    document.getElementById("tl").classList.add("op1");
-});
-let lol=document.getElementById("container2").querySelectorAll("img");
-for(i of lol)
-{
-    i.addEventListener("mouseenter",()=>
-{
-    document.getElementById("tl").classList.remove("op0");
-    document.getElementById("tl").classList.add("op1");
-});
-}
-document.body.addEventListener("mousemove",(event)=>
-{
-    document.getElementById("tl").style.left=`${event.pageX+1}px`;
-    document.getElementById("tl").style.top=`${event.pageY}px`;
-    
-});
+
+
+
+
 
 function tap(el)
 {
+    field.coins+=50;
     x=el.attributes.x.value;
     y=el.attributes.y.value;
     switch (tool)
     {
         case "l":
-            if(field.field[y][x].grass==true)
+            if(field.field[y][x].seeded)
+                {
+                    field.field[y][x].seeded=false;
+                    field.field[y][x].dirt=true;
+                    document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace(`${field.field[y][x].lvl}`,"N");
+                    field.field[y][x].lvl=0;
+                }
+            else if(field.field[y][x].grass==true)
             {
             field.field[y][x].grass=false;
             field.field[y][x].dirt=true;
@@ -268,6 +306,8 @@ function tap(el)
         break;
 
         case "m":
+            if(field.field[y][x].seeded)
+                break;
             if(field.field[y][x].seeded==true)
             {
             field.field[y][x].seeded=false;
@@ -285,26 +325,144 @@ function tap(el)
         case "v":
         if(field.water>0)
         {
-            if(field.field[y][x].seeded==true&&field.field[y][x].wet==false)
+            if(field.field[y][x].seeded==true&&field.field[y][x].lvl<5)
             {
-            field.field[y][x].wet=true;
-            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DD","DW");
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace(`${field.field[y][x].lvl}`,`${field.field[y][x].lvl+1}`);
             field.water--;
+            update();
+            field.field[y][x].lvl+=1;
             }
             else if(field.field[y][x].diged==true&&field.field[y][x].wet==false)
             {
             field.field[y][x].wet=true;
             document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DD","DW");
             field.water--;
+            update();
             }
             document.getElementById("vn").attributes.src.value=`png/${field.water}.png`;
         }
         break;
+
+        case "s":
+            if(field.field[y][x].seeded)
+                break;
+        if(field.seeds>0)
+        {
+            if(field.field[y][x].seeded!=true&&field.field[y][x].wet==true)
+            {
+            document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("DW","0");
+            field.field[y][x].seeded=true;
+            field.field[y][x].wet=false;
+            field.field[y][x].diged=false;
+            field.seeds--;
+            update();
+            }
+            document.getElementById("sn").attributes.src.value=`png/${field.seeds}.png`;
+        }
+        break;
     
         default:
+            if(field.field[y][x].lvl==5)
+                {
+                    field.field[y][x].lvl=0
+                    field.field[y][x].diged=false;
+                    field.field[y][x].dirt=false;
+                    field.field[y][x].seeded=false;
+                    field.field[y][x].wet=false;
+                    field.field[y][x].psheno=true;
+                    document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("5","PSH");
+                }
+            else if(field.field[y][x].psheno)
+                {
+                    field.psheno+=1;
+                    field.field[y][x].dirt=true;
+                    field.field[y][x].psheno=false;
+                    document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("PSH","N");
+                }
+            else if(!field.field[y][x].open&&field.coins>=10)
+                {
+                    field.coins -= 10;
+                    document.getElementById("cnN").innerText=field.coins
+                    field.field[y][x].open=true;
+                    document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML=document.querySelector(`[x="${x}"][y="${y}"]`).innerHTML.replace("L","G");
+                }
         break;
     }
+    update();
 }
 
-update();
-printField();
+function pay(event)
+{
+    switch(event.target.offsetParent.id)
+    {
+        case "motig":
+            {
+                if(field.coins>=event.target.price)
+                field.kvas-=event.target.price;
+                switch(event.target.price)
+                {
+                    case '5':
+                        {
+
+                            event.target.price=10;
+                            event.target.offsetParent.getElementById("price").src=ent.target.offsetParent.getElementById("price").src.replace('1','2')
+                            event.target.offsetParent.getElementById("prev").src=ent.target.offsetParent.getElementById("price").src.replace('1','2')
+                            break;
+                        }
+                        case '10':
+                        {
+                            event.target.price=15;
+                            event.target.offsetParent.getElementById("price").src=ent.target.offsetParent.getElementById("price").src.replace('2','3')
+                            event.target.offsetParent.getElementById("prev").src=ent.target.offsetParent.getElementById("price").src.replace('2','3')
+                            break;
+                        }
+                        case '15':
+                        {
+                            event.target.price=20;
+                            event.target.offsetParent.getElementById("price").src=ent.target.offsetParent.getElementById("price").src.replace('3','4')
+                            event.target.offsetParent.getElementById("prev").src=ent.target.offsetParent.getElementById("price").src.replace('3','4')
+                            break;
+                        }
+                        case '20':
+                        {
+                            event.target.price=50;
+                            event.target.offsetParent.getElementById("price").src=ent.target.offsetParent.getElementById("price").src.replace('4','5')
+                            event.target.offsetParent.getElementById("prev").src=ent.target.offsetParent.getElementById("price").src.replace('4','5')
+                            break;
+                        }
+                }
+                break;
+            }
+            case 'wat':
+                {
+                    if(field.water<9)
+                        {
+                            field.water+=1;
+                            field.coins--;
+                        }
+                        break;
+                }
+                case 'sug':
+                    {
+                        if(field.coins>=4)
+                            {
+                        field.sugar++;
+                        field.coins-=4;
+                            }
+                        break;
+                    }
+                case "sed":
+                    {
+                        if(field.coins>=2)
+                        if(field.seeds<9)
+                            {
+                                field.coins-=2;
+                                field.seeds++;
+                            }
+                            break;
+                    }
+
+
+    }
+    update();
+}

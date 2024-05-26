@@ -6,9 +6,16 @@
     <title>Document</title>
     <link rel="stylesheet" href="css.css">
 </head>
-<body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
-    <div id="tl" class="op0">
-        <img class="op0" id="m" src="png/m (1).png" alt=""><img class="op0" id="v" src="png/vedro.png" alt=""><img class="op0" id="l" src="png/l.png" alt="">
+<body  ondragstart="return false;" onselectstart="return false;">
+    <div id="coins">
+        <div>
+           <img id="kv" src="png/kvas.png">
+           <h1 id="kvN">:KVAS</h1>
+        </div>
+        <div>
+            <img id="cn" src="png/cn.png">
+            <h1 id="cnN">:COINS</h1>
+        </div>
     </div>
     <div id="bs">
         <img class="nepon" x="1" onclick="choose(this)" src="png/games.png" alt=""><img class="pon" x="2" onclick="choose(this)" src="png/garden.png" alt=""><img class="pon" x="3" onclick="choose(this)" src="png/shop.png" alt="">
@@ -17,11 +24,11 @@
     <div id="container1" class="op1">
         <div class="bl1">
             <img class="prev"  src="png/gi1.png" alt="">
-            <div class="bt"><img class="p" src="png/pl.png" alt=""><img class="pH" src="png/plH.png" alt=""></div>
+            <div  class="bt"><a href="../patapon/html.html"><img class="p" src="png/pl.png" alt=""><img class="pH" src="png/plH.png" alt=""></a></div>
         </div>
         <div class="bl1">
             <img class="prev"  src="png/gi1.png" alt="">
-            <div  class="bt"><a href="../potata/html.html"><img class="p" src="png/pl.png" alt=""><img class="pH" src="png/plH.png" alt=""></a></div>
+            <div  class="bt"><a href="../patapon/html.html"><img class="p" src="png/pl.png" alt=""><img class="pH" src="png/plH.png" alt=""></a></div>
         </div>
     </div>
     <div id="container2" class="op0">
@@ -29,6 +36,7 @@
             <div onclick="getTool(event)" class="tool" id="motiga"><img src="png/mot (1).png" alt=""></div>
             <div onclick="getTool(event)" class="tool" id="vedro"><img src="png/vedro.png" alt=""><img class="n" id="vn" src="png/wtf.png" alt=""></div>
             <div onclick="getTool(event)" class="tool" id="lopata"><img src="png/lop.png" alt=""></div>
+            <div onclick="getTool(event)" class="tool" id="seed"><img src="png/seed.png" alt=""><img class="n" id="sn" src="png/wtf.png" alt=""></div>
         </div>
         <div id="field">
             
@@ -36,12 +44,24 @@
     </div>
     <div id="container3" class="op0">
         <div class="bl1">
-            <img class="prev"  src="png/gi1.png" alt="">
-            <div class="bt"><img class="p" src="png/pl.png" alt=""><img class="pH" src="png/plH.png" alt=""></div>
+            <img class="prev"  src="png/seedPrev.png" alt="">
+            <img class="price" src="png/seedPr.png" alt="">
+            <button price="2" id="sed" onclick="pay(event);" class="buy"><img src="png/buyT.png"></button>
         </div>
         <div class="bl1">
-            <img class="prev"  src="png/gi1.png" alt="">
-            <div  class="bt"><a href="../potata/html.html"><img class="p" src="png/pl.png" alt=""><img class="pH" src="png/plH.png" alt=""></a></div>
+            <img class="prev"  src="png/sugarPrev.png" alt="">
+            <img class="price" src="png/sugarPr.png" alt="">
+            <button price="4" id="sug" onclick="pay(event);" class="buy"><img src="png/buyT.png"></button>
+        </div>
+        <div class="bl1">
+            <img class="prev"  src="png/waterPrev.png" alt="">
+            <img class="price" src="png/waterPr.png" alt="">
+            <button price="1" id="wat" onclick="pay(event);" class="buy"><img src="png/buyT.png"></button>
+        </div>
+        <div class="bl1">
+            <img class="prev"  src="png/mPrev1.png" alt="">
+            <img class="price" src="png/kvas1.png" alt="">
+            <button price="5" id="motig" onclick="pay(event);" class="buy"><img src="png/buyT.png"></button>
         </div>
     </div>
 </div>

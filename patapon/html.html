@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+    <div id="bg"><img src="png/pxArt (1).png" alt=""></div>
+    <img class="kostil" src="png/fl.png" alt="">
+     <img class="kostil" src="png/1.png" alt="">
+     <img class="kostil" src="png/2.png" alt="">
+     <img class="kostil" src="png/mark.png" alt="">
+     <img  class="kostil" src="png/3.png" alt="">
+     <img class="kostil"  src="png/4.png" alt="">
+     <img  class="kostil" src="png/5.png" alt="">
+     <img  class="kostil" src="png/6.png" alt="">
+     <img  class="kostil" src="png/7.png" alt="">
+     <img  class="kostil" src="png/8.png" alt="">
+     <img  class="kostil" src="png/po.png" alt="">
+     <img  class="kostil" src="png/bag.png" alt="">
+
+     <div id="lvl">
+        <img id="bgLvl"  src="png/lvl.png" alt="">
+        <div id="bs">
+        <div onclick="chooseLvl(this.attributes.lvl.value)" lvl="1" class="lvlB"> <img class="nh" src="png/lvl1.png" alt=""><img class="h" src="png/lvl1H.png" alt=""></div>
+        <div onclick="chooseLvl(this.attributes.lvl.value)" lvl="2" class="lvlB"> <img class="nh" src="png/lvl2.png" alt=""><img class="h" src="png/lvl2H.png" alt=""></div>
+        <div onclick="chooseLvl(this.attributes.lvl.value)" lvl="3" class="lvlB"> <img class="nh" src="png/lvl3.png" alt=""><img class="h" src="png/lvl3H.png" alt=""></div>
+        </div>
+    </div>
+
+    <div  id="field">
+     
+    </div>
+
+    <div id="end"><img id="win1" src="png/win1.png" alt=""><img id="win2" src="png/win2.png" alt=""><img id="win3" src="png/win3.png" alt=""><img id="lose" src="png/lose.png" alt="">       <div onmouseout="document.getElementById('reWH').style.opacity='0';document.getElementById('reLH').style.opacity='0';document.getElementById('reW').style.opacity='1';document.getElementById('reL').style.opacity='1';" onmouseover="document.getElementById('reW').style.opacity='0';document.getElementById('reL').style.opacity='0';document.getElementById('reWH').style.opacity='1';document.getElementById('reLH').style.opacity='1';" onclick="restart()" id="re"><img id="reW" src="png/reW.png" alt=""><img  id="reWH" src="png/reWH.png" alt="">    <img id="reL" src="png/reL.png" alt=""> <img id="reLH" src="png/reLH.png" alt="">  </div></div>
+    <script src="js.js"></script>
+</body>
+</html>
